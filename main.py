@@ -55,10 +55,10 @@ base_sim.print_processes()
 # instantiate simulators
 simulators = [FCFS(num_processes=num_processes, arrivals_per_time_unit=arrivals_per_time_unit,
                    avg_cpu_burst_time=avg_cpu_burst_time, context_switch_time=context_switch_time),
-              SJF(num_processes=num_processes, arrivals_per_time_unit=arrivals_per_time_unit,
-                  avg_cpu_burst_time=avg_cpu_burst_time, context_switch_time=context_switch_time),
               RR(num_processes=num_processes, arrivals_per_time_unit=arrivals_per_time_unit,
                  avg_cpu_burst_time=avg_cpu_burst_time, context_switch_time=context_switch_time, quantum=quantum),
+              SJF(num_processes=num_processes, arrivals_per_time_unit=arrivals_per_time_unit,
+                  avg_cpu_burst_time=avg_cpu_burst_time, context_switch_time=context_switch_time),
               SRTF(num_processes=num_processes, arrivals_per_time_unit=arrivals_per_time_unit,
                    avg_cpu_burst_time=avg_cpu_burst_time, context_switch_time=context_switch_time)]
 

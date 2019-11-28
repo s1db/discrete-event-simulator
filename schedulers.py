@@ -9,18 +9,16 @@ class FCFS(SchedulerDES):
         return self.processes[cur_event.process_id]
 
     def dispatcher_func(self, cur_process):
-        arrival_time, quantum, process_id = cur_process.arrival_time, cur_process.service_time, cur_process.process_id
         cur_process.process_state = ProcessStates.RUNNING
-        cur_process.run_for(quantum, self.time)
-        self.time += quantum
-        cur_process.process_state = ProcessStates.TERMINATED
-        newEvent = Event(process_id=process_id, event_type=EventTypes.PROC_CPU_DONE, event_time=self.time)
-        return newEvent
+        self.time += cur_process.run_for(cur_process.service_time, self.time)
+        if cur_process.remaining_time == 0:
+            cur_process.process_state = ProcessStates.TERMINATED
+        return Event(process_id=cur_process.process_id, event_type=EventTypes.PROC_CPU_DONE, event_time=self.time)
 
 
 class SJF(SchedulerDES):
     def scheduler_func(self, cur_event):
-        pass
+        return self.processes[cur_event.process_id]
     
     def dispatcher_func(self, cur_process):
         pass
@@ -31,12 +29,15 @@ class RR(SchedulerDES):
         return self.processes[cur_event.process_id]
 
     def dispatcher_func(self, cur_process):
-        arrival_time, service_time, quantum, process_id = cur_process.arrival_time, cur_process.service_time, cur_process.quantum, cur_process.process_id
         cur_process.process_state = ProcessStates.RUNNING
-        self.time += cur_process.run_for(quantum, self.time)
+        self.time += cur_process.run_for(self.quantum, self.time)
         cur_process.process_state = ProcessStates.TERMINATED
-        newEvent = Event(process_id=process_id, event_type=EventTypes.PROC_CPU_DONE, event_time=self.time)
-        return newEvent
+        if cur_process.remaining_time == 0:
+            newEventType = EventTypes.PROC_CPU_DONE
+        else:
+            cur_process.process_state = ProcessStates.READY
+            newEventType = EventTypes.PROC_CPU_REQ
+        return Event(process_id=cur_process.process_id, event_type=newEventType, event_time=self.time)
 
 
 class SRTF(SchedulerDES):
