@@ -159,7 +159,7 @@ class SchedulerDES(object):
         self._logger.debug("Processes at time 0:")
         self.__log_processes()
 
-        # While there are more events to process...
+        #  there are more events to process...
         while self.events_queue:
             # Debug logging of events queue
             self._logger.debug("Events queue at time " + str(self.time) + ":")
