@@ -1,7 +1,6 @@
 from des import SchedulerDES
 from process import ProcessStates
 from event import Event, EventTypes
-# importing process and event states, updating self.time
 
 class FCFS(SchedulerDES):
     def scheduler_func(self, cur_event):
@@ -10,8 +9,7 @@ class FCFS(SchedulerDES):
     def dispatcher_func(self, cur_process):
         cur_process.process_state = ProcessStates.RUNNING
         self.time += cur_process.run_for(cur_process.service_time, self.time)
-        if cur_process.remaining_time == 0:
-            cur_process.process_state = ProcessStates.TERMINATED
+        cur_process.process_state = ProcessStates.TERMINATED
         return Event(process_id=cur_process.process_id, event_type=EventTypes.PROC_CPU_DONE, event_time=self.time)
 
 
@@ -21,7 +19,6 @@ class SJF(SchedulerDES):
         for process in self.processes:
             if (process.process_state == ProcessStates.READY) and ((process.remaining_time < process_with_least_burst.remaining_time) or (process_with_least_burst.process_state == ProcessStates.TERMINATED)):
                 process_with_least_burst = process
-                print(process)
         return process_with_least_burst
         
     def dispatcher_func(self, cur_process):
